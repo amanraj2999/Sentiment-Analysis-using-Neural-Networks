@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[51]:
+# In[1]:
 
 
 from keras.datasets import imdb
@@ -9,67 +9,67 @@ from keras.datasets import imdb
 
 # ### Dataset preparation
 
-# In[52]:
+# In[2]:
 
 
 ((XT,YT),(Xt,Yt)) = imdb.load_data(num_words=10000)
 
 
-# In[53]:
+# In[3]:
 
 
 len(XT)                    #X train dataset
 
 
-# In[54]:
+# In[4]:
 
 
 len(Xt)                    #X Test dataset
 
 
-# In[55]:
+# In[5]:
 
 
-print(XT[0])
+# print(XT[0])
 
 
-# In[56]:
+# In[6]:
 
 
 word_idx = imdb.get_word_index()
 
 
-# In[57]:
+# In[7]:
 
 
-print(word_idx.items())
+# print(word_idx.items())
 
 
-# In[58]:
+# In[8]:
 
 
 idx_word = dict([value,key] for (key,value) in word_idx.items())
 
 
-# In[59]:
+# In[9]:
 
 
-print(idx_word.items())
+# print(idx_word.items())
 
 
-# In[60]:
+# In[10]:
 
 
 actual_review = ' '.join([idx_word.get(idx-3,'?') for idx in XT[0]])
 
 
-# In[61]:
+# In[11]:
 
 
-print(actual_review)
+# print(actual_review)
 
 
-# In[62]:
+# In[12]:
 
 
 ## Next Step - Vectorize the Data
@@ -85,22 +85,22 @@ def vectorize_sentences(sentences,dim=10000):
   return outputs
 
 
-# In[63]:
+# In[13]:
 
 
 X_train = vectorize_sentences(XT)
 X_test = vectorize_sentences(Xt)
-print(X_train.shape)
-print(X_test.shape)
+# print(X_train.shape)
+# print(X_test.shape)
 
 
-# In[64]:
+# In[14]:
 
 
-print(X_train[0])
+# print(X_train[0])
 
 
-# In[65]:
+# In[15]:
 
 
 Y_train = np.asarray(YT).astype('float32')
@@ -112,14 +112,14 @@ Y_test = np.asarray(Yt).astype('float32')
 # * 2 Hidden Layers with 16 units each
 # * 1 Output Layer with 1 unit (Sigmoid Activation)
 
-# In[66]:
+# In[16]:
 
 
 from keras import models
 from keras.layers import Dense
 
 
-# In[67]:
+# In[17]:
 
 
 # Define the model
@@ -129,14 +129,14 @@ model.add(Dense(16,activation='relu'))
 model.add(Dense(1,activation='sigmoid'))
 
 
-# In[68]:
+# In[18]:
 
 
 # Compile the Model
 model.compile(optimizer='rmsprop',loss='binary_crossentropy',metrics=['accuracy'])
 
 
-# In[69]:
+# In[19]:
 
 
 model.summary()
@@ -144,7 +144,7 @@ model.summary()
 
 # ### Training & Validation
 
-# In[70]:
+# In[20]:
 
 
 x_val = X_train[:5000]
@@ -154,7 +154,7 @@ y_val = Y_train[:5000]
 y_train_new = Y_train[5000:]
 
 
-# In[71]:
+# In[21]:
 
 
 hist = model.fit(x_train_new,y_train_new,epochs=20,batch_size=512,validation_data=(x_val,y_val))
@@ -162,19 +162,19 @@ hist = model.fit(x_train_new,y_train_new,epochs=20,batch_size=512,validation_dat
 
 # ### Visualising results 
 
-# In[89]:
+# In[22]:
 
 
 import matplotlib.pyplot as plt
 
 
-# In[90]:
+# In[23]:
 
 
 h = hist.history
 
 
-# In[94]:
+# In[24]:
 
 
 # Visualising Validation loss vs Training Loss
@@ -187,7 +187,7 @@ plt.legend()
 plt.show()
 
 
-# In[95]:
+# In[25]:
 
 
 # Visualising Validation Acc vs Training Acc
@@ -200,20 +200,19 @@ plt.legend()
 plt.show()
 
 
-# In[76]:
+# In[26]:
 
 
 model.evaluate(X_test,Y_test)[1]
 
 
-# In[77]:
+# In[27]:
 
 
 model.evaluate(X_train,Y_train)[1]
 
 
-# In[78]:
+# In[28]:
 
 
 model.predict(X_test)      # gives binary prediction --> closer to 1 --> positive & closer to 0 --> negative 
-
